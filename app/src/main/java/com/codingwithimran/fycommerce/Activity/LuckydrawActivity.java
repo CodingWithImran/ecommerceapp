@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +26,7 @@ public class LuckydrawActivity extends AppCompatActivity {
     Button submit;
     FirebaseFirestore database;
     FirebaseAuth auth;
+    String u_name, user_email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,16 +42,15 @@ public class LuckydrawActivity extends AppCompatActivity {
         database = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
 
-        String user_name = name.getText().toString();
-        String user_email = email.getText().toString();
-
-        Map<String, String> obj = new HashMap<>();
-        obj.put("Name", user_name);
-        obj.put("Email", user_email);
+        u_name = name.getText().toString();
+        user_email = email.getText().toString();
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Map<String, String> obj = new HashMap<>();
+                obj.put("my_name", name.getText().toString());
+                obj.put("my_email", email.getText().toString());
                 database.collection("Luck Draw").add(obj).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentReference> task) {
